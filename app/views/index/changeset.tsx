@@ -50,6 +50,12 @@ const focusPaint: FocusLayerPaint = {
   "line-width": 3,
 }
 
+const getChangesetDiffUrl = (changesetId: bigint) => {
+  const url = new URL("https://overpass-api.de/achavi/")
+  url.searchParams.set("changeset", changesetId.toString())
+  return url.toString()
+}
+
 export const ChangesetStats = ({
   numCreate,
   numModify,
@@ -377,6 +383,16 @@ const ChangesetSidebar = ({
 
             <ChangesetHeader data={d} />
             <Tags tags={d.tags} />
+
+            <a
+              class="btn btn-sm btn-soft w-100 mt-3"
+              href={getChangesetDiffUrl(d.id)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i class="bi bi-bezier2 me-1" />
+              {t("changeset.open_diff_viewer")}
+            </a>
 
             {/* Report button */}
             {isLoggedIn && d.user && config.userConfig!.user.id !== d.user.id && (
